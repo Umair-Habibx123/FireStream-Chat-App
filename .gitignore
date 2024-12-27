@@ -1,0 +1,97 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.buildlog/
+.history
+.svn/
+migrate_working_dir/
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# VS Code settings folder (optional, uncomment if you want to ignore it)
+#.vscode/
+
+# Flutter/Dart/Pub related
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.flutter-versions
+.packages
+.pub-cache/
+.pub/
+/build/
+
+# iOS related
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/Flutter.framework/
+ios/Flutter/Flutter.podspec
+ios/Flutter/Generated.xcconfig
+ios/Flutter/app.flx
+ios/Flutter/app.dSYM
+ios/Flutter/Debug.xcconfig
+ios/Flutter/Profile.xcconfig
+ios/Flutter/Release.xcconfig
+
+# Android related
+android/.cxx/
+android/local.properties
+android/app/debug
+android/app/profile
+android/app/release
+
+# Firebase related
+# Prevent sensitive keys and configurations from being committed
+android/app/google-services.json
+ios/Runner/GoogleService-Info.plist
+
+# Symbolication related
+app.*.symbols
+
+# Obfuscation related
+app.*.map.json
+
+# Web related
+web/.dart_tool/
+web/.firebase/
+web/.flutter-plugins
+web/.flutter-plugins-dependencies
+web/.pub-cache/
+web/.pub/
+web/build/
+
+# Linux related
+linux/flutter/ephemeral/
+
+# MacOS related
+macos/Flutter/ephemeral/
+
+# Windows related
+windows/flutter/ephemeral/
+
+# Flutterfire CLI configuration
+firebase.json
+firebaserc
+
+# Flutter State Restoration related
+.restoration/
+
+# Logging and crash files
+*.crash
+*.log
+*.stacktrace
+
+# Package-specific exclusions
+package-lock.json
+yarn.lock
+node_modules/
