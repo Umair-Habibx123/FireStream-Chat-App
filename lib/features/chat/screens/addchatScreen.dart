@@ -50,8 +50,45 @@ class _AddNewChatScreenState extends State<AddNewChatScreen> {
     );
   }
 
+  // Future<void> _loadContacts() async {
+  //   try {
+  //     DocumentSnapshot savedContactsDoc = await FirebaseFirestore.instance
+  //         .collection('users')
+  //         .doc(_currentUserEmail)
+  //         .collection('contacts')
+  //         .doc('savedContacts')
+  //         .get();
+
+  //     if (savedContactsDoc.exists) {
+  //       List<dynamic> contactEmails = savedContactsDoc['contactEmails'] ?? [];
+  //       List<Map<String, dynamic>> contacts = [];
+
+  //       for (String email in contactEmails) {
+  //         DocumentSnapshot userDoc = await FirebaseFirestore.instance
+  //             .collection('users')
+  //             .doc(email)
+  //             .get();
+  //         if (userDoc.exists) {
+  //           contacts.add({
+  //             'email': email,
+  //             'username': userDoc['username'],
+  //             'profilePic': userDoc['profilePic'],
+  //           });
+  //         }
+  //       }
+
+  //       setState(() {
+  //         _contacts = contacts;
+  //       });
+  //     }
+  //   } catch (e) {
+  //     showSnackbar("Error loading contacts: $e");
+  //   }
+  // }
+
   Future<void> _loadContacts() async {
     try {
+      // Fetch saved contacts
       DocumentSnapshot savedContactsDoc = await FirebaseFirestore.instance
           .collection('users')
           .doc(_currentUserEmail)
@@ -59,15 +96,30 @@ class _AddNewChatScreenState extends State<AddNewChatScreen> {
           .doc('savedContacts')
           .get();
 
+      // Fetch blocklist
+      DocumentSnapshot blockListDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(_currentUserEmail)
+          .collection('contacts')
+          .doc('blockList')
+          .get();
+
       if (savedContactsDoc.exists) {
         List<dynamic> contactEmails = savedContactsDoc['contactEmails'] ?? [];
+        List<dynamic> blockListEmails =
+            blockListDoc.exists ? blockListDoc['contactEmails'] ?? [] : [];
+
         List<Map<String, dynamic>> contacts = [];
 
         for (String email in contactEmails) {
+          // Skip contacts in blocklist
+          if (blockListEmails.contains(email)) continue;
+
           DocumentSnapshot userDoc = await FirebaseFirestore.instance
               .collection('users')
               .doc(email)
               .get();
+
           if (userDoc.exists) {
             contacts.add({
               'email': email,

@@ -3,6 +3,7 @@
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 /// Default [FirebaseOptions] for use with your Firebase apps.
 ///
@@ -40,49 +41,42 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCnzP_a-Sh-_GPwzwa4udXoVgE__4G62K0',
-    appId: '1:269173309474:web:574eda7299792b4223ca7b',
-    messagingSenderId: '269173309474',
-    projectId: 'firestream-c856a',
-    authDomain: 'firestream-c856a.firebaseapp.com',
-    storageBucket: 'firestream-c856a.appspot.com',
-    measurementId: 'G-67XJXG971N',
-  );
+  static FirebaseOptions get web => FirebaseOptions(
+        apiKey: dotenv.env['FIREBASE_WEB_API_KEY']!,
+        appId: dotenv.env['FIREBASE_WEB_APP_ID']!,
+        messagingSenderId: dotenv.env['FIREBASE_WEB_MESSAGING_SENDER_ID']!,
+        projectId: dotenv.env['FIREBASE_WEB_PROJECT_ID']!,
+        authDomain: dotenv.env['FIREBASE_WEB_AUTH_DOMAIN']!,
+        storageBucket: dotenv.env['FIREBASE_WEB_STORAGE_BUCKET']!,
+        measurementId: dotenv.env['FIREBASE_WEB_MEASUREMENT_ID']!,
+      );
 
-  static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAhmlmEVYg-PmLRE-zbF7BOHjdhIOWA36c',
-    appId: '1:269173309474:android:a969f4b0db3faad123ca7b',
-    messagingSenderId: '269173309474',
-    projectId: 'firestream-c856a',
-    storageBucket: 'firestream-c856a.appspot.com',
-  );
+  static FirebaseOptions get android => FirebaseOptions(
+        apiKey: dotenv.env['FIREBASE_ANDROID_API_KEY']!,
+        appId: dotenv.env['FIREBASE_ANDROID_APP_ID']!,
+        messagingSenderId: dotenv.env['FIREBASE_ANDROID_MESSAGING_SENDER_ID']!,
+        projectId: dotenv.env['FIREBASE_ANDROID_PROJECT_ID']!,
+        storageBucket: dotenv.env['FIREBASE_ANDROID_STORAGE_BUCKET']!,
+      );
 
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyB5oPWxrE1FwihRFS1bqD9p_RhWRRyDIwE',
-    appId: '1:269173309474:ios:743214c3971cedb523ca7b',
-    messagingSenderId: '269173309474',
-    projectId: 'firestream-c856a',
-    storageBucket: 'firestream-c856a.appspot.com',
-    iosBundleId: 'com.example.firestream',
-  );
+  static FirebaseOptions get ios => FirebaseOptions(
+        apiKey: dotenv.env['FIREBASE_IOS_API_KEY']!,
+        appId: dotenv.env['FIREBASE_IOS_APP_ID']!,
+        messagingSenderId: dotenv.env['FIREBASE_IOS_MESSAGING_SENDER_ID']!,
+        projectId: dotenv.env['FIREBASE_IOS_PROJECT_ID']!,
+        storageBucket: dotenv.env['FIREBASE_IOS_STORAGE_BUCKET']!,
+        iosBundleId: dotenv.env['FIREBASE_IOS_BUNDLE_ID']!,
+      );
 
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyB5oPWxrE1FwihRFS1bqD9p_RhWRRyDIwE',
-    appId: '1:269173309474:ios:743214c3971cedb523ca7b',
-    messagingSenderId: '269173309474',
-    projectId: 'firestream-c856a',
-    storageBucket: 'firestream-c856a.appspot.com',
-    iosBundleId: 'com.example.firestream',
-  );
+  static FirebaseOptions get macos => ios;
 
-  static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyCnzP_a-Sh-_GPwzwa4udXoVgE__4G62K0',
-    appId: '1:269173309474:web:855494bb1d8722f123ca7b',
-    messagingSenderId: '269173309474',
-    projectId: 'firestream-c856a',
-    authDomain: 'firestream-c856a.firebaseapp.com',
-    storageBucket: 'firestream-c856a.appspot.com',
-    measurementId: 'G-78QVJETZJ1',
-  );
+  static FirebaseOptions get windows => FirebaseOptions(
+        apiKey: dotenv.env['FIREBASE_WINDOWS_API_KEY']!,
+        appId: dotenv.env['FIREBASE_WINDOWS_APP_ID']!,
+        messagingSenderId: dotenv.env['FIREBASE_WINDOWS_MESSAGING_SENDER_ID']!,
+        projectId: dotenv.env['FIREBASE_WINDOWS_PROJECT_ID']!,
+        authDomain: dotenv.env['FIREBASE_WINDOWS_AUTH_DOMAIN']!,
+        storageBucket: dotenv.env['FIREBASE_WINDOWS_STORAGE_BUCKET']!,
+        measurementId: dotenv.env['FIREBASE_WINDOWS_MEASUREMENT_ID']!,
+      );
 }

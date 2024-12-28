@@ -95,3 +95,7 @@ firebaserc
 package-lock.json
 yarn.lock
 node_modules/
+
+# Environment files
+.env
+.env.*

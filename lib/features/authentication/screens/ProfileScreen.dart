@@ -243,6 +243,137 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 }
 
+// class EditContactsScreen extends StatefulWidget {
+//   const EditContactsScreen({super.key});
+
+//   @override
+//   _EditContactsScreenState createState() => _EditContactsScreenState();
+// }
+
+// class _EditContactsScreenState extends State<EditContactsScreen> {
+//   final String _currentUserEmail =
+//       FirebaseAuth.instance.currentUser?.email ?? '';
+//   List<Map<String, dynamic>> _contacts = [];
+//   bool _isLoading = true;
+
+//   @override
+//   void initState() {
+//     super.initState();
+//     _loadContacts();
+//   }
+
+//   Future<void> _loadContacts() async {
+//     try {
+//       final savedContactsDoc = await FirebaseFirestore.instance
+//           .collection('users')
+//           .doc(_currentUserEmail)
+//           .collection('contacts')
+//           .doc('savedContacts')
+//           .get();
+
+//       if (savedContactsDoc.exists) {
+//         List<dynamic> contactEmails = savedContactsDoc['contactEmails'] ?? [];
+//         List<Map<String, dynamic>> contactsDetails = [];
+
+//         // Fetch additional user details for each contact email
+//         for (String email in contactEmails) {
+//           final userDoc = await FirebaseFirestore.instance
+//               .collection('users')
+//               .doc(email)
+//               .get();
+
+//           if (userDoc.exists) {
+//             final userData = userDoc.data();
+//             contactsDetails.add({
+//               'email': email,
+//               'username': userData?['username'] ?? 'Unknown',
+//               'profilePic': userData?['profilePic'] ?? '',
+//             });
+//           }
+//         }
+
+//         setState(() {
+//           _contacts = contactsDetails;
+//           _isLoading = false;
+//         });
+//       } else {
+//         setState(() {
+//           _contacts = [];
+//           _isLoading = false;
+//         });
+//       }
+//     } catch (e) {
+//       print("Error loading contacts: $e");
+//       setState(() {
+//         _isLoading = false;
+//       });
+//     }
+//   }
+
+//   Future<void> _deleteContact(String email) async {
+//     try {
+//       setState(() {
+//         _isLoading = true;
+//       });
+
+//       final savedContactsDocRef = FirebaseFirestore.instance
+//           .collection('users')
+//           .doc(_currentUserEmail)
+//           .collection('contacts')
+//           .doc('savedContacts');
+
+//       final savedContactsDoc = await savedContactsDocRef.get();
+
+//       if (savedContactsDoc.exists) {
+//         List<dynamic> contactEmails = savedContactsDoc['contactEmails'] ?? [];
+//         contactEmails.remove(email);
+
+//         await savedContactsDocRef.update({'contactEmails': contactEmails});
+
+//         setState(() {
+//           _contacts = contactEmails.map((email) => {'email': email}).toList();
+//           _isLoading = false;
+//         });
+//       }
+//     } catch (e) {
+//       print("Error deleting contact: $e");
+//       setState(() {
+//         _isLoading = false;
+//       });
+//     }
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: const Text("Edit Contacts"),
+//       ),
+//       body: _isLoading
+//           ? const Center(child: CircularProgressIndicator())
+//           : _contacts.isEmpty
+//               ? const Center(child: Text("No contacts found."))
+//               : ListView.builder(
+//                   itemCount: _contacts.length,
+//                   itemBuilder: (context, index) {
+//                     final contact = _contacts[index];
+//                     return ListTile(
+//                       leading: CircleAvatar(
+//                         backgroundImage: NetworkImage(contact['profilePic']),
+//                       ),
+//                       title: Text(contact['username']),
+//                       subtitle: Text(contact['email']),
+//                       trailing: IconButton(
+//                         icon: const Icon(Icons.delete, color: Colors.red),
+//                         onPressed: () => _deleteContact(contact['email']),
+//                       ),
+//                     );
+//                   },
+//                 ),
+//     );
+//   }
+// }
+
 class EditContactsScreen extends StatefulWidget {
   const EditContactsScreen({super.key});
 
@@ -259,24 +390,24 @@ class _EditContactsScreenState extends State<EditContactsScreen> {
   @override
   void initState() {
     super.initState();
-    _loadContacts();
+    _loadContactslist();
   }
 
-  Future<void> _loadContacts() async {
+  Future<void> _loadContactslist() async {
     try {
-      final savedContactsDoc = await FirebaseFirestore.instance
+      final contactsDoc = await FirebaseFirestore.instance
           .collection('users')
           .doc(_currentUserEmail)
           .collection('contacts')
           .doc('savedContacts')
           .get();
 
-      if (savedContactsDoc.exists) {
-        List<dynamic> contactEmails = savedContactsDoc['contactEmails'] ?? [];
+      if (contactsDoc.exists) {
+        List<dynamic> contacts = contactsDoc['contactEmails'] ?? [];
         List<Map<String, dynamic>> contactsDetails = [];
 
-        // Fetch additional user details for each contact email
-        for (String email in contactEmails) {
+        // Fetch additional user details for each blocked email
+        for (String email in contacts) {
           final userDoc = await FirebaseFirestore.instance
               .collection('users')
               .doc(email)
@@ -303,40 +434,40 @@ class _EditContactsScreenState extends State<EditContactsScreen> {
         });
       }
     } catch (e) {
-      print("Error loading contacts: $e");
+      print("Error loading Contact list: $e");
       setState(() {
         _isLoading = false;
       });
     }
   }
 
-  Future<void> _deleteContact(String email) async {
+  Future<void> _deleteContacts(String email) async {
     try {
       setState(() {
         _isLoading = true;
       });
 
-      final savedContactsDocRef = FirebaseFirestore.instance
+      final contactsDocRef = FirebaseFirestore.instance
           .collection('users')
           .doc(_currentUserEmail)
           .collection('contacts')
           .doc('savedContacts');
 
-      final savedContactsDoc = await savedContactsDocRef.get();
+      final contactsDoc = await contactsDocRef.get();
 
-      if (savedContactsDoc.exists) {
-        List<dynamic> contactEmails = savedContactsDoc['contactEmails'] ?? [];
-        contactEmails.remove(email);
+      if (contactsDoc.exists) {
+        List<dynamic> contacts = contactsDoc['contactEmails'] ?? [];
+        contacts.remove(email);
 
-        await savedContactsDocRef.update({'contactEmails': contactEmails});
+        await contactsDocRef.update({'contactEmails': contacts});
 
         setState(() {
-          _contacts = contactEmails.map((email) => {'email': email}).toList();
+          _contacts.removeWhere((contacts) => contacts['email'] == email);
           _isLoading = false;
         });
       }
     } catch (e) {
-      print("Error deleting contact: $e");
+      print("Error deleting from Contact list: $e");
       setState(() {
         _isLoading = false;
       });
@@ -347,25 +478,25 @@ class _EditContactsScreenState extends State<EditContactsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Edit Contacts"),
+        title: const Text("Edit Contact list"),
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : _contacts.isEmpty
-              ? const Center(child: Text("No contacts found."))
+              ? const Center(child: Text("No Contacts found."))
               : ListView.builder(
                   itemCount: _contacts.length,
                   itemBuilder: (context, index) {
-                    final contact = _contacts[index];
+                    final contacts = _contacts[index];
                     return ListTile(
                       leading: CircleAvatar(
-                        backgroundImage: NetworkImage(contact['profilePic']),
+                        backgroundImage: NetworkImage(contacts['profilePic']),
                       ),
-                      title: Text(contact['username']),
-                      subtitle: Text(contact['email']),
+                      title: Text(contacts['username']),
+                      subtitle: Text(contacts['email']),
                       trailing: IconButton(
                         icon: const Icon(Icons.delete, color: Colors.red),
-                        onPressed: () => _deleteContact(contact['email']),
+                        onPressed: () => _deleteContacts(contacts['email']),
                       ),
                     );
                   },
